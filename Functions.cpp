@@ -9,53 +9,60 @@
 #include <vector>
 using namespace std;
 
+//Global Variables for genetic algorithm
 int PopulationSize = 0;
 int Mutator = 0;
 int Looping = 0;
 int aVerage = 0;
 
-//STAB STAB MURDER
-std::vector <Indiv> Popkiller(int killing, std::vector <Indiv> Popper)
+
+/*Function Popkiller(AKA STAB STAB MURDER): 
+- Deletes a random portion of the individual population. Lower a individual's fitness, greater chance
+of deletion. 
+
+- Will delete any beginning individuals if less than half of the population hasn't been 
+   deleted after first loop. 
+
+- Will stop after half of population is deleted
+                     */
+std::vector <Indiv> Popkiller(std::vector <Indiv> Popper)
 {
+	//Initialization Variables
 	std::vector <Indiv> Storage = Popper;
 	int vecSize = Popper.size();
 	int dIce = 0;
-	int loopCount = 0;
-
-	cout << vecSize << endl;
-
-	if (killing<=vecSize)
-	{
-		Storage.erase(Storage.begin(), Storage.begin() + killing);
-	}
-	else
-	{
-		cout << "ERROR" << endl;
-	}
+	int killCount = 0;
 
 	//Initialize random seed
 	srand(time(NULL));
 
-	dIce = rand() % 100 + 1;
-
-	while (Popper.size>(vecSize - killing))
+	for (int i = 0; i < vecSize; i++)
 	{
-		if (loopCount>=killing)
+	
+		if (i >=(vecSize/2))
 		{
-			//Just kill
+			//Create size check to avoid shooting over vector length
+			//Just kill remaining first indivs
+			Popper.erase(Popper.begin(), Popper.begin()+(Popper.size()-vecSize/2));
+			i = vecSize + 1;
+			break;
 		}
 		else
 		{
-			//Throw the dice
+			//Throw the dice for each indiv
 			dIce = rand() % 100 + 1;
-			if (Popper[loopCount])
+			if (dIce>Popper[i].getFit)
 			{
-
+				Popper.erase(Popper.begin() + i);
 			}
+
 		}
 
-	}
+	
 
+	}
+	
+	
 	//Create for while loop that looks for specific pop size
 
 	/*
@@ -81,11 +88,17 @@ std::vector <Indiv> Popkiller(int killing, std::vector <Indiv> Popper)
 	(int i = 0; i < killing; i++)
 	}*/
 	
+	//check size
 	cout << Storage.size() << endl;
 	return Storage;
 }
 
-//Make DA LOVE here
+//Children Creator Function (AKA DA LOVE FUNCTION):
+/*Function used to create children (New individuals) from two Individuals from the population. Fitness
+  of new Individual will be based on fitness of parents (This value being the average of both parents).
+  Small chance mutation, where a small amount of fitness value will be added or substracted.
+*/
+
 /*std::vector <Indiv> createChildren (std::vector <Indiv> Lovers)
 {
 //TO DO: create children generator
@@ -107,7 +120,9 @@ for(int i = 0; i < (half population size); i++)
 }
 */
 
-//Calculate Average for population (SHAZZAM)
+//Calculate Average for population (SHAZZAM!!):
+/*Pretty self explanatory here. Function simply adds together all the fitness values, divides by
+the # of individuals, and voila, average fitness value*/
 int popAverage(std::vector <Indiv> averagePop)
 {
 
@@ -128,21 +143,11 @@ int popAverage(std::vector <Indiv> averagePop)
 
 }
 
-/* int popAverage (std vector <Indiv> averagePop)
-{	int av=0;
-
-
--Create average calculator
--This require loops. use while look
-while (not at end)
-{
-av=av+fitness of selected indiv from averagePop ()
-}
-}
-*/
-
-//Main function for Genetic Algorotithm.
-//(CREATE EVOLUTION INTERFACE HERE)
+//Genetic Algorotithm Function :
+/*The main function of the programing, using all the other small functions to complete the task.
+  Essentially, this functions acts as an interface for all the value to cleanly plugged in.
+  Afterwards*/
+//Abathur: "Sequences good. Can make better"
 void geneticAlg(int popSize, int mut, int loop)
 {
 	PopulationSize = popSize;

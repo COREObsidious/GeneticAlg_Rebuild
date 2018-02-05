@@ -12,7 +12,7 @@ void geneticAlg(int popSize, int mut, int loop);
 
 int popAverage(std::vector <Indiv> averagePop);
 
-std::vector <Indiv> Popkiller(int killing, std::vector <Indiv> Popper);
+std::vector <Indiv> Popkiller(std::vector <Indiv> Popper);
 
 
 #endif // !FUNCTIONS_H_
