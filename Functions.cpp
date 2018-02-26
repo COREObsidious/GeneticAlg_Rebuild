@@ -16,7 +16,7 @@ int Looping = 0;
 int aVerage = 0;
 
 
-/*Function Popkiller(AKA STAB STAB MURDER): 
+/*Population Kill Function (AKA STAB STAB MURDER): 
 - Deletes a random portion of the individual population. Lower a individual's fitness, greater chance
 of deletion. 
 
@@ -29,68 +29,40 @@ std::vector <Indiv> Popkiller(std::vector <Indiv> Popper)
 {
 	//Initialization Variables
 	std::vector <Indiv> Storage = Popper;
-	int vecSize = Popper.size();
 	int dIce = 0;
 	int killCount = 0;
+	int vecSize = Popper.size();
+	cout << Popper.size() << endl;
 
 	//Initialize random seed
 	srand(time(NULL));
 
-	for (int i = 0; i < vecSize; i++)
+	//Iterator look for seeing who gets killed
+	for (std::vector <Indiv>::iterator it = Popper.begin(); it !=Popper.end() ; )
 	{
-	
-		if (i >=(vecSize/2))
+		//Throw dice. See if Indiv survives or not. Higher fit, greater chance.
+		//If no kill, move onto next indiv
+		dIce = rand() % 100 + 1;
+		if (dIce > (it->getFit()))
 		{
-			//Create size check to avoid shooting over vector length
-			//Just kill remaining first indivs
-			Popper.erase(Popper.begin(), Popper.begin()+(Popper.size()-vecSize/2));
-			i = vecSize + 1;
-			break;
+			it = Popper.erase(it);
+			++killCount;
 		}
 		else
 		{
-			//Throw the dice for each indiv
-			dIce = rand() % 100 + 1;
-			if (dIce>Popper[i].getFit)
-			{
-				Popper.erase(Popper.begin() + i);
-			}
-
+			++it;
 		}
 
-	
-
+		//Check if there are too many deaths. If half of population killed, exit
+		if (killCount >= (vecSize / 2))
+		{
+			it = Popper.end();
+			break;
+		}
 	}
 	
-	
-	//Create for while loop that looks for specific pop size
-
-	/*
-	while (Popper.size()>(Popper.size-killing))
-	{
-	-Obtain fitness of individual
-	if loop counter >killing
-	{
-	Then just kill population that's from start to need amount
-	}
-	else
-	{
-	-Roll the dice.  Less fitness, greater chance of death
-	-1-100 random dice
-	-If dice lands underneath fitness value, survive
-	if not, kill
-	Increment death counter
-	Inc loop counter
-	}
-	}
-	for (int i =
-	{
-	(int i = 0; i < killing; i++)
-	}*/
-	
-	//check size
-	cout << Storage.size() << endl;
-	return Storage;
+	cout << Popper.size() << endl;
+	return Storage = Popper;
 }
 
 //Children Creator Function (AKA DA LOVE FUNCTION):
@@ -98,27 +70,37 @@ std::vector <Indiv> Popkiller(std::vector <Indiv> Popper)
   of new Individual will be based on fitness of parents (This value being the average of both parents).
   Small chance mutation, where a small amount of fitness value will be added or substracted.
 */
-
-/*std::vector <Indiv> createChildren (std::vector <Indiv> Lovers)
+std::vector <Indiv> createChildren(std::vector <Indiv> Lovers)
 {
-//TO DO: create children generator
--Create temp holder for original pop
--Create temporary holder for children
+	std::vector <Indiv> tempParents=Lovers;
+	std::vector <Indiv> tempChildren;
+	int vecSize = Lovers.size()/2;
+	int fit1 = 0;
+	int fit2 = 0;
 
--Double check population, and check if it's even
+	for (std::vector <Indiv>::iterator it = Lovers.begin(); it != Lovers.end(); )
+	{
+		fit1 = it->getFit();
+		if (it != Lovers.end())
+		{
+			++it;
+			fit2 = it->getFit();
+		}
+		else
+		{
+			break;
+		}
+		//Spawn child
+		tempChildren.push_back(Indiv(fit1, fit2, Mutator ));
+	}
+	
+	for (int i = 0; i < vecSize; i++)
+	{
+		tempChildren.push_back(Indiv());
+	}
 
--Create loop to create children
-for(int i = 0; i < (half population size); i++)
-{
--Access two Individual, and obtain both their fitnesses
--Plug fitness into overload constructor for children
--Push new child into population
--Rinse, wash, repeat until all population is done
+	return tempChildren;
 }
-
-
-}
-*/
 
 //Calculate Average for population (SHAZZAM!!):
 /*Pretty self explanatory here. Function simply adds together all the fitness values, divides by
@@ -157,10 +139,13 @@ void geneticAlg(int popSize, int mut, int loop)
 	//Must put if for making sure the pop size is even
 	std::vector <Indiv> Pop(popSize);
 
-	cout << popAverage(Pop) << endl;
+	Popkiller(Pop);
+
+	//cout << popAverage(Pop) << endl;
 	//Popkiller(10, Pop);
 }
 
+//BELLOW: PSEUDO CODE FOR ABOVE FUNCTION
 /*void eVolution (int popSize, int mUtator, int loopNumber)
 {
 -Place universal numbers here; or as global number in .cpp file

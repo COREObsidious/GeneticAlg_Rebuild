@@ -19,6 +19,19 @@ Indiv::Indiv(int setT)
 	fitness = setT;
 }
 
+//Constructor for parents w/ mutator. Creates indiv based on two given fitness values. Mutator 
+//provides random value
+Indiv::Indiv(int parent1, int parent2, int mutator)
+{
+	srand(time(NULL));
+	int avChild = ((parent1+parent2)/2) +rand() % mutator + 1;
+	if (avChild>100)
+	{
+		avChild = 100;
+	}
+
+	fitness = avChild;
+}
 
 //Deconstructor
 Indiv::~Indiv()
